@@ -11,13 +11,14 @@ defmodule ListFilter do
   defp filter_integer(list) do
     list
     |> Enum.map(fn elem ->
-      case Integer.parse(elem) do
-        :error -> nil
-        {number, ""} -> number
-      end
+      Integer.parse(elem)
+      |> handle_parse()
     end)
     |> Enum.reject(&is_nil/1)
   end
+
+  defp handle_parse(:error), do: nil
+  defp handle_parse({number, ""}), do: number
 
   defp filter_odd(list) do
     list
